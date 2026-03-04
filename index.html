@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,12 +8,12 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700&family=Noto+Sans+SC:wght@400;900&family=JetBrains+Mono:wght@400;800&display=swap');
-        
+
         :root {
             --bg-coffee: #DCD7C9;
             --card-coffee: #F5F2E9;
             --text-coffee: #2C5E4F;
-            
+
             --bg-tech: #0A0E1A;
             --card-tech: #F0F4FF;
             --text-tech: #1A1F36;
@@ -25,23 +26,33 @@
         }
 
         /* 咖啡背景：物理桌面质感 */
-        .mode-coffee { 
-            background-color: var(--bg-coffee); 
+        .mode-coffee {
+            background-color: var(--bg-coffee);
             color: var(--text-coffee);
             background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
         }
 
         /* 科技背景：深蓝沉浸感 */
-        .mode-tech { 
+        .mode-tech {
             background: radial-gradient(circle at center, #0F172A 0%, #020617 100%);
-            color: var(--text-tech); 
+            color: var(--text-tech);
         }
 
-        .font-serif { font-family: 'Noto Serif SC', serif; }
-        .font-mono { font-family: 'JetBrains Mono', monospace; }
+        .font-serif {
+            font-family: 'Noto Serif SC', serif;
+        }
 
-        .paper-shadow { box-shadow: 0 50px 100px -20px rgba(0,0,0,0.3); }
-        .scrap-shadow { box-shadow: 10px 10px 30px -10px rgba(0,0,0,0.05); }
+        .font-mono {
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .paper-shadow {
+            box-shadow: 0 50px 100px -20px rgba(0, 0, 0, 0.3);
+        }
+
+        .scrap-shadow {
+            box-shadow: 10px 10px 30px -10px rgba(0, 0, 0, 0.05);
+        }
 
         /* 侧边索引标签 */
         .index-tab {
@@ -59,7 +70,7 @@
         .index-tab.active {
             z-index: 60;
             opacity: 1 !important;
-            box-shadow: 2px 0 10px rgba(0,0,0,0.05);
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.05);
         }
 
         .vertical-text {
@@ -71,18 +82,30 @@
         /* 科技感网格装饰 */
         .tech-grid {
             background-image: linear-gradient(rgba(30, 64, 175, 0.08) 1px, transparent 1px),
-                              linear-gradient(90deg, rgba(30, 64, 175, 0.08) 1px, transparent 1px);
+                linear-gradient(90deg, rgba(30, 64, 175, 0.08) 1px, transparent 1px);
             background-size: 40px 40px;
             mask-image: radial-gradient(circle at center, black, transparent 80%);
         }
 
         @keyframes neon-pulse {
-            0%, 100% { box-shadow: 0 0 5px rgba(30, 64, 175, 0.1); }
-            50% { box-shadow: 0 0 25px rgba(30, 64, 175, 0.2); }
-        }
-        .animate-neon { animation: neon-pulse 3s infinite; }
 
-        .transition-all-500 { transition: all 0.5s ease; }
+            0%,
+            100% {
+                box-shadow: 0 0 5px rgba(30, 64, 175, 0.1);
+            }
+
+            50% {
+                box-shadow: 0 0 25px rgba(30, 64, 175, 0.2);
+            }
+        }
+
+        .animate-neon {
+            animation: neon-pulse 3s infinite;
+        }
+
+        .transition-all-500 {
+            transition: all 0.5s ease;
+        }
 
         /* 动态边线样式 */
         .typo-group:hover {
@@ -97,40 +120,50 @@
                 border-left-width: 3px !important;
                 border-left-color: var(--hover-accent) !important;
             }
+
             #polaroid.mobile-hover {
                 transform: rotate(0deg) !important;
             }
+
             #polaroid.mobile-hover img {
                 filter: grayscale(0) !important;
                 opacity: 1 !important;
             }
-            #color-list > div.mobile-hover > div:first-child {
+
+            #color-list>div.mobile-hover>div:first-child {
                 transform: scale(1.1) !important;
             }
-            #layout-list > div.mobile-hover {
+
+            #layout-list>div.mobile-hover {
                 border-left-color: var(--layout-accent) !important;
             }
-            #layout-list > div.mobile-hover > div {
+
+            #layout-list>div.mobile-hover>div {
                 transform: translateX(0.25rem) !important;
             }
         }
     </style>
 </head>
+
 <body id="body-root" class="mode-coffee p-4 md:p-8 flex justify-center items-start overflow-x-hidden">
 
     <div class="relative flex items-start">
-        
+
         <!-- A3 竖版主容器 -->
-        <div id="poster-container" class="relative w-full max-w-[800px] min-h-[1132px] bg-[#F5F2E9] paper-shadow p-10 md:p-14 border border-black/5 rounded-sm transition-all-500 overflow-hidden z-20">
-            
+        <div id="poster-container"
+            class="relative w-full max-w-[800px] min-h-[1132px] bg-[#F5F2E9] paper-shadow p-6 md:p-14 border border-black/5 rounded-sm transition-all-500 overflow-hidden z-20">
+
             <!-- 背景层 -->
             <div id="coffee-pattern" class="absolute inset-0 pointer-events-none transition-opacity duration-500">
                 <svg class="absolute bottom-10 right-10 w-48 h-48 text-[#7B4B2A] opacity-5" viewBox="0 0 100 100">
-                    <path d="M30,90 Q40,70 30,50 T30,10" fill="none" stroke="currentColor" stroke-width="0.5" stroke-dasharray="2,2" />
-                    <path d="M50,85 Q65,65 50,45 T50,5" fill="none" stroke="currentColor" stroke-width="0.5" stroke-dasharray="3,3" />
+                    <path d="M30,90 Q40,70 30,50 T30,10" fill="none" stroke="currentColor" stroke-width="0.5"
+                        stroke-dasharray="2,2" />
+                    <path d="M50,85 Q65,65 50,45 T50,5" fill="none" stroke="currentColor" stroke-width="0.5"
+                        stroke-dasharray="3,3" />
                 </svg>
             </div>
-            <div id="tech-pattern" class="absolute inset-0 tech-grid opacity-0 pointer-events-none transition-opacity duration-500"></div>
+            <div id="tech-pattern"
+                class="absolute inset-0 tech-grid opacity-0 pointer-events-none transition-opacity duration-500"></div>
 
             <!-- 装饰胶带 -->
             <div class="absolute top-10 left-[-30px] z-40 transform -rotate-[35deg]">
@@ -139,14 +172,18 @@
             </div>
 
             <!-- 标题区域 -->
-            <header id="main-header" class="relative z-20 mb-20 transform rotate-[-0.5deg] bg-white p-8 md:p-10 scrap-shadow border-t-4 border-[#2C5E4F] w-full transition-all-500 text-inherit">
+            <header id="main-header"
+                class="relative z-20 mb-20 transform rotate-[-0.5deg] bg-white p-6 md:p-10 scrap-shadow border-t-4 border-[#2C5E4F] w-full transition-all-500 text-inherit">
                 <div class="flex items-center gap-2 mb-3">
                     <div id="header-icon"></div>
-                    <span id="version-tag" class="text-[10px] font-black tracking-[0.3em] opacity-40 uppercase">Moodboard · v5.3</span>
+                    <span id="version-tag"
+                        class="text-[10px] font-black tracking-[0.3em] opacity-40 uppercase">Moodboard · v5.3</span>
                 </div>
-                <h1 id="main-title" class="text-4xl md:text-6xl font-black flex items-baseline gap-2 tracking-tighter mb-4 transition-all">
+                <h1 id="main-title"
+                    class="text-4xl md:text-6xl font-black flex items-baseline gap-2 tracking-tighter mb-4 transition-all">
                     今日宜喝咖啡
-                    <span id="terminal-cursor" class="text-[#E69138] font-mono text-2xl md:text-4xl opacity-50 ml-2">/</span>
+                    <span id="terminal-cursor"
+                        class="text-[#E69138] font-mono text-2xl md:text-4xl opacity-50 ml-2">/</span>
                 </h1>
                 <p id="sub-title" class="text-xl opacity-60 font-medium tracking-tight">
                     都市白领方向 · 视觉灵感手册
@@ -157,23 +194,40 @@
             <div class="relative grid grid-cols-1 md:grid-cols-2 gap-12 z-10 text-inherit">
                 <!-- 左侧栏 -->
                 <div class="space-y-12 transform rotate-1 transition-transform duration-700">
-                    <section class="bg-white p-10 shadow-lg border border-black/5 relative overflow-hidden transition-all-500">
-                        <h2 class="text-[11px] font-black mb-10 flex items-center gap-2 opacity-40 uppercase tracking-[0.25em] text-inherit">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="13.5" cy="6.5" r=".5" fill="currentColor"/><circle cx="17.5" cy="10.5" r=".5" fill="currentColor"/><circle cx="8.5" cy="7.5" r=".5" fill="currentColor"/><circle cx="6.5" cy="12.5" r=".5" fill="currentColor"/><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.707-.484 2.103-1.206.35-.64.302-1.45-.122-2.172a3.39 3.39 0 0 1 .519-4.141c.994-.994 2.654-1.476 4.14-1.356.73.06 1.48-.133 2.062-.544C21.444 12.18 22 11.156 22 10.125 22 5.637 17.513 2 12 2"/></svg>
+                    <section
+                        class="bg-white p-6 md:p-10 shadow-lg border border-black/5 relative overflow-hidden transition-all-500">
+                        <h2
+                            class="text-[11px] font-black mb-10 flex items-center gap-2 opacity-40 uppercase tracking-[0.25em] text-inherit">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <circle cx="13.5" cy="6.5" r=".5" fill="currentColor" />
+                                <circle cx="17.5" cy="10.5" r=".5" fill="currentColor" />
+                                <circle cx="8.5" cy="7.5" r=".5" fill="currentColor" />
+                                <circle cx="6.5" cy="12.5" r=".5" fill="currentColor" />
+                                <path
+                                    d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.707-.484 2.103-1.206.35-.64.302-1.45-.122-2.172a3.39 3.39 0 0 1 .519-4.141c.994-.994 2.654-1.476 4.14-1.356.73.06 1.48-.133 2.062-.544C21.444 12.18 22 11.156 22 10.125 22 5.637 17.513 2 12 2" />
+                            </svg>
                             色彩规范 / Color Palette
                         </h2>
                         <div id="color-list" class="space-y-8"></div>
                     </section>
 
-                    <section id="polaroid" class="bg-white pt-10 pb-12 px-6 shadow-2xl transform -rotate-2 hover:rotate-0 transition-all duration-700 relative group">
-                        <svg class="absolute -top-6 -left-2 w-10 h-24 text-zinc-400 rotate-[-20deg] z-30 drop-shadow-sm opacity-60" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M21.44 11.05l-9.19 9.19a6 6 0 01-8.49-8.49l9.19-9.19a4 4 0 015.66 5.66l-9.2 9.19a2 2 0 01-2.83-2.83l8.49-8.48" />
+                    <section id="polaroid"
+                        class="bg-white pt-10 pb-12 px-6 shadow-2xl transform -rotate-2 hover:rotate-0 transition-all duration-700 relative group">
+                        <svg class="absolute -top-6 -left-2 w-10 h-24 text-zinc-400 rotate-[-20deg] z-30 drop-shadow-sm opacity-60"
+                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <path
+                                d="M21.44 11.05l-9.19 9.19a6 6 0 01-8.49-8.49l9.19-9.19a4 4 0 015.66 5.66l-9.2 9.19a2 2 0 01-2.83-2.83l8.49-8.48" />
                         </svg>
                         <div class="aspect-[4/5] bg-zinc-100 mb-6 overflow-hidden relative border border-black/5">
-                            <img id="ref-image" src="" alt="Mood" class="w-full h-full object-cover grayscale opacity-80 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-1000">
+                            <img id="ref-image" src="" alt="Mood"
+                                class="w-full h-full object-cover grayscale opacity-80 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-1000">
                         </div>
                         <div class="text-left space-y-1 text-inherit">
-                            <p id="ref-tag" class="text-[9px] font-black opacity-30 tracking-[0.2em] uppercase">Reference Source</p>
+                            <p id="ref-tag" class="text-[9px] font-black opacity-30 tracking-[0.2em] uppercase">
+                                Reference Source</p>
                             <p id="ref-desc" class="text-[10px] font-bold opacity-60 leading-relaxed"></p>
                         </div>
                     </section>
@@ -181,18 +235,37 @@
 
                 <!-- 右侧栏 -->
                 <div class="space-y-12">
-                    <section class="bg-white p-12 shadow-xl transform rotate-[-1.5deg] relative overflow-hidden min-h-[500px] transition-all-500">
+                    <section
+                        class="bg-white p-6 md:p-12 shadow-xl transform rotate-[-1.5deg] relative overflow-hidden min-h-[500px] transition-all-500">
                         <div id="bg-icon-container" class="transition-all duration-500 text-inherit"></div>
-                        <h2 class="text-[11px] font-black mb-12 flex items-center gap-3 opacity-40 uppercase tracking-[0.25em] relative z-10 text-inherit">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 7 4 4 20 4 20 7"/><line x1="9" x2="15" y1="20" y2="20"/><line x1="12" x2="12" y1="4" y2="20"/></svg>
+                        <h2
+                            class="text-[11px] font-black mb-12 flex items-center gap-3 opacity-40 uppercase tracking-[0.25em] relative z-10 text-inherit">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <polyline points="4 7 4 4 20 4 20 7" />
+                                <line x1="9" x2="15" y1="20" y2="20" />
+                                <line x1="12" x2="12" y1="4" y2="20" />
+                            </svg>
                             字体系统 / Typography
                         </h2>
                         <div id="typo-list" class="space-y-10 relative z-10"></div>
                     </section>
 
-                    <section class="bg-white/70 backdrop-blur-md p-10 shadow-lg border border-black/10 transform rotate-1 relative group overflow-hidden transition-all-500">
-                        <h2 class="text-[11px] font-black mb-8 flex items-center gap-3 opacity-40 uppercase tracking-[0.3em] text-inherit">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 22-1.35-1.35a2 2 0 0 1 0-2.83L15.41 4.05a2 2 0 0 1 2.83 0l2.83 2.83a2 2 0 0 1 0 2.83L7.35 23.35a2 2 0 0 1-2.83 0L3 22Z"/><path d="m11 15 2 2"/><path d="m15 11 2 2"/><path d="m5 18 2 2"/><path d="m19 7-2-2"/></svg>
+                    <section
+                        class="bg-white/70 backdrop-blur-md p-6 md:p-10 shadow-lg border border-black/10 transform rotate-1 relative group overflow-hidden transition-all-500">
+                        <h2
+                            class="text-[11px] font-black mb-8 flex items-center gap-3 opacity-40 uppercase tracking-[0.3em] text-inherit">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <path
+                                    d="m3 22-1.35-1.35a2 2 0 0 1 0-2.83L15.41 4.05a2 2 0 0 1 2.83 0l2.83 2.83a2 2 0 0 1 0 2.83L7.35 23.35a2 2 0 0 1-2.83 0L3 22Z" />
+                                <path d="m11 15 2 2" />
+                                <path d="m15 11 2 2" />
+                                <path d="m5 18 2 2" />
+                                <path d="m19 7-2-2" />
+                            </svg>
                             布局逻辑 / Design Specs
                         </h2>
                         <div id="layout-list" class="space-y-6"></div>
@@ -201,16 +274,19 @@
             </div>
 
             <!-- 页脚 -->
-            <footer class="mt-28 pt-10 border-t border-dashed border-black/10 flex flex-col items-center gap-6 opacity-30 transition-all-500 text-inherit">
+            <footer
+                class="mt-28 pt-10 border-t border-dashed border-black/10 flex flex-col items-center gap-6 opacity-30 transition-all-500 text-inherit">
                 <div class="flex items-center gap-8">
                     <div id="footer-icon"></div>
                     <div class="flex flex-col text-center">
-                        <p id="footer-ver" class="text-[10px] font-black tracking-[0.5em] uppercase">Visual Mood Spec v5.3</p>
+                        <p id="footer-ver" class="text-[10px] font-black tracking-[0.5em] uppercase">Visual Mood Spec
+                            v5.3</p>
                         <p class="text-[9px] font-mono uppercase opacity-60">A3 Portrait · Interactive System</p>
                     </div>
                     <div id="footer-side-icon"></div>
                 </div>
-                <div id="status-tag" class="px-6 py-1.5 border border-black/20 rounded-full text-[8px] font-black tracking-[0.2em]">
+                <div id="status-tag"
+                    class="px-6 py-1.5 border border-black/20 rounded-full text-[8px] font-black tracking-[0.2em]">
                     PROJECT ASSIGNMENT · 2025.03
                 </div>
             </footer>
@@ -218,14 +294,18 @@
 
         <!-- 侧边固定索引标签 (数字并排直立) - 新增 sticky top-32 z-50 保持悬浮 -->
         <div class="flex flex-col gap-1 mt-32 -ml-0.5 sticky top-32 z-50 h-max">
-            <button onclick="setMode('coffee')" id="tab-coffee" class="index-tab active w-12 h-40 rounded-r-xl bg-[#F5F2E9] border border-l-0 border-black/5 text-[#2C5E4F]">
-                <div class="flex flex-row justify-center items-center font-mono text-[15px] font-black leading-none mb-1">
+            <button onclick="setMode('coffee')" id="tab-coffee"
+                class="index-tab active w-12 h-40 rounded-r-xl bg-[#F5F2E9] border border-l-0 border-black/5 text-[#2C5E4F]">
+                <div
+                    class="flex flex-row justify-center items-center font-mono text-[15px] font-black leading-none mb-1">
                     <span>0</span><span>1</span>
                 </div>
                 <span class="vertical-text text-[14px] font-black">今日咖啡</span>
             </button>
-            <button onclick="setMode('tech')" id="tab-tech" class="index-tab w-12 h-40 rounded-r-xl bg-[#F0F4FF] border border-l-0 border-black/5 text-[#1E40AF] opacity-60">
-                <div class="flex flex-row justify-center items-center font-mono text-[15px] font-black leading-none mb-1">
+            <button onclick="setMode('tech')" id="tab-tech"
+                class="index-tab w-12 h-40 rounded-r-xl bg-[#F0F4FF] border border-l-0 border-black/5 text-[#1E40AF] opacity-60">
+                <div
+                    class="flex flex-row justify-center items-center font-mono text-[15px] font-black leading-none mb-1">
                     <span>0</span><span>2</span>
                 </div>
                 <span class="vertical-text text-[14px] font-black">科技峰会</span>
@@ -233,7 +313,7 @@
         </div>
 
     </div>
-    
+
     <div class="hidden 2xl:block fixed left-12 top-0 h-full w-px bg-black/5"></div>
 
     <script>
@@ -310,13 +390,13 @@
             document.getElementById('body-root').className = `mode-${mode} p-4 md:p-8 flex justify-center items-start overflow-x-hidden transition-all-500`;
             const container = document.getElementById('poster-container');
             container.style.backgroundColor = isTech ? '#F0F4FF' : '#F5F2E9';
-            
+
             document.getElementById('coffee-pattern').style.opacity = isTech ? '0' : '1';
             document.getElementById('tech-pattern').style.opacity = isTech ? '1' : '0';
-            
+
             const tabCoffee = document.getElementById('tab-coffee');
             const tabTech = document.getElementById('tab-tech');
-            if(isTech) {
+            if (isTech) {
                 tabTech.classList.add('active');
                 tabTech.style.opacity = '1';
                 tabCoffee.classList.remove('active');
@@ -351,9 +431,11 @@
             renderTypo(data.typo, isTech, data.accent);
             renderLayout(data.layout, isTech, data.accent);
 
-            if(isTech) container.classList.add('animate-neon');
+            if (isTech) container.classList.add('animate-neon');
             else container.classList.remove('animate-neon');
-            
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+
             // --- 新增：每次切换或初始化后，重启针对内部元素的中心滑动监听 ---
             setTimeout(initMobileObserver, 100);
         }
@@ -380,7 +462,7 @@
                         .typo-group:hover { border-left-color: var(--hover-accent) !important; padding-left: 1.25rem; }
                     </style>
                     <p class="text-[9px] font-black uppercase tracking-[0.2em] mb-3 opacity-60" style="color: ${accent}">${t.t}</p>
-                    <p class="${t.v.length > 20 ? 'text-sm leading-relaxed opacity-80 italic text-inherit' : 'text-3xl font-black leading-tight text-inherit'}">${t.v}</p>
+                    <p class="${t.v.length > 20 ? 'text-sm leading-relaxed opacity-80 italic text-inherit break-words' : 'text-2xl md:text-3xl font-black leading-tight text-inherit break-words'}">${t.v}</p>
                 </div>
             `).join('');
         }
@@ -406,7 +488,7 @@
         function initMobileObserver() {
             // 只有在屏幕比较小的时候才启动观测（手机端）
             if (window.innerWidth > 768) return;
-            
+
             if (scrollObserver) {
                 scrollObserver.disconnect();
             }
@@ -422,7 +504,7 @@
                 });
             }, {
                 // margin 定义为在屏幕上下留出约 35% 不触发，代表当元素滚动到屏幕中间 30% 范围时才算
-                rootMargin: '-35% 0px -35% 0px', 
+                rootMargin: '-35% 0px -35% 0px',
                 threshold: 0
             });
 
@@ -435,7 +517,7 @@
             ];
 
             targets.forEach(el => {
-                if(el) scrollObserver.observe(el);
+                if (el) scrollObserver.observe(el);
             });
         }
 
@@ -445,11 +527,12 @@
         let index = 0;
         setInterval(() => {
             const cursorEl = document.getElementById('terminal-cursor');
-            if(cursorEl) {
+            if (cursorEl) {
                 index = (index + 1) % cursors.length;
                 cursorEl.textContent = cursors[index];
             }
         }, 200);
     </script>
 </body>
+
 </html>

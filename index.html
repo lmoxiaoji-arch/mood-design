@@ -3,63 +3,68 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>版式设计情绪板 - v5.3</title>
+    <title>AI商业设计师作业集 - v5.4</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700&family=Noto+Sans+SC:wght@400;900&family=JetBrains+Mono:wght@400;800&display=swap');
         
         :root {
             --bg-coffee: #DCD7C9;
-            --card-coffee: #F5F2E9;
             --text-coffee: #2C5E4F;
+            --accent-coffee: #E69138;
             
             --bg-tech: #0A0E1A;
-            --card-tech: #F0F4FF;
-            --text-tech: #1A1F36;
+            --text-tech: #F0F4FF;
+            --accent-tech: #1D4ED8;
         }
 
         body {
             font-family: 'Noto Sans SC', sans-serif;
-            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-            min-height: 100vh;
+            transition: background-color 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            scroll-behavior: smooth;
         }
 
-        /* 咖啡背景：物理桌面质感 */
+        /* 背景纹理：咖啡模式 */
         .mode-coffee { 
             background-color: var(--bg-coffee); 
-            color: var(--text-coffee);
             background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
         }
 
-        /* 科技背景：深蓝沉浸感 */
+        /* 背景纹理：科技模式 */
         .mode-tech { 
             background: radial-gradient(circle at center, #0F172A 0%, #020617 100%);
-            color: var(--text-tech); 
         }
-
-        .font-serif { font-family: 'Noto Serif SC', serif; }
-        .font-mono { font-family: 'JetBrains Mono', monospace; }
 
         .paper-shadow { box-shadow: 0 50px 100px -20px rgba(0,0,0,0.3); }
         .scrap-shadow { box-shadow: 10px 10px 30px -10px rgba(0,0,0,0.05); }
 
-        /* 侧边索引标签 */
+        /* 侧边固定索引标签 */
+        .index-sidebar {
+            position: fixed;
+            right: 0;
+            top: 30%;
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
         .index-tab {
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative;
-            z-index: 10;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: flex-start;
             padding: 1.25rem 0;
             gap: 0.4rem;
+            opacity: 0.4;
+            transform: translateX(10px);
         }
 
         .index-tab.active {
-            z-index: 60;
-            opacity: 1 !important;
-            box-shadow: 2px 0 10px rgba(0,0,0,0.05);
+            opacity: 1;
+            transform: translateX(0);
+            box-shadow: -2px 0 10px rgba(0,0,0,0.1);
         }
 
         .vertical-text {
@@ -68,7 +73,26 @@
             letter-spacing: 0.05em;
         }
 
-        /* 科技感网格装饰 */
+        /* 自动感应触发的边线动效 */
+        .reveal-edge {
+            transition: all 0.5s ease;
+        }
+        .reveal-edge.in-view {
+            padding-left: 1.25rem;
+            border-left-width: 3px;
+        }
+
+        /* 自动感应触发的图片去灰度 */
+        .reveal-img {
+            transition: all 1s ease;
+            filter: grayscale(1);
+            opacity: 0.8;
+        }
+        .reveal-img.in-view {
+            filter: grayscale(0);
+            opacity: 1;
+        }
+
         .tech-grid {
             background-image: linear-gradient(rgba(30, 64, 175, 0.08) 1px, transparent 1px),
                               linear-gradient(90deg, rgba(30, 64, 175, 0.08) 1px, transparent 1px);
@@ -78,310 +102,233 @@
 
         @keyframes neon-pulse {
             0%, 100% { box-shadow: 0 0 5px rgba(30, 64, 175, 0.1); }
-            50% { box-shadow: 0 0 25px rgba(30, 64, 175, 0.2); }
+            50% { box-shadow: 0 0 20px rgba(30, 64, 175, 0.2); }
         }
         .animate-neon { animation: neon-pulse 3s infinite; }
-
-        .transition-all-500 { transition: all 0.5s ease; }
-
-        /* 动态边线样式 */
-        .typo-group:hover {
-            padding-left: 1.25rem;
-            border-left-width: 3px;
-        }
     </style>
 </head>
-<body id="body-root" class="mode-coffee p-4 md:p-8 flex justify-center items-start overflow-x-hidden">
+<body id="body-root" class="mode-coffee p-4 md:p-8 flex flex-col items-center gap-24 overflow-x-hidden">
 
-    <div class="relative flex items-start">
+    <!-- 侧边固定索引 (随动状态) -->
+    <aside class="index-sidebar">
+        <button id="tab-01" onclick="scrollToSection('section-coffee')" class="index-tab active w-12 h-40 rounded-l-xl bg-[#F5F2E9] border border-r-0 border-black/5 text-[#2C5E4F]">
+            <div class="flex flex-row justify-center items-center font-mono text-[15px] font-black leading-none mb-1">
+                <span>0</span><span>1</span>
+            </div>
+            <span class="vertical-text text-[13px] font-black">今日咖啡</span>
+        </button>
+        <button id="tab-02" onclick="scrollToSection('section-tech')" class="index-tab w-12 h-40 rounded-l-xl bg-[#F0F4FF] border border-r-0 border-black/5 text-[#1E40AF]">
+            <div class="flex flex-row justify-center items-center font-mono text-[15px] font-black leading-none mb-1">
+                <span>0</span><span>2</span>
+            </div>
+            <span class="vertical-text text-[13px] font-black">科技峰会</span>
+        </button>
+    </aside>
+
+    <!-- 页面 1: 今日咖啡 -->
+    <article id="section-coffee" data-mode="coffee" class="moodboard-page relative w-full max-w-[800px] min-h-[1132px] bg-[#F5F2E9] paper-shadow p-10 md:p-14 border border-black/5 rounded-sm transition-all-500 overflow-hidden">
         
-        <!-- A3 竖版主容器 -->
-        <div id="poster-container" class="relative w-full max-w-[800px] min-h-[1132px] bg-[#F5F2E9] paper-shadow p-10 md:p-14 border border-black/5 rounded-sm transition-all-500 overflow-hidden z-20">
-            
-            <!-- 背景层 -->
-            <div id="coffee-pattern" class="absolute inset-0 pointer-events-none transition-opacity duration-500">
-                <svg class="absolute bottom-10 right-10 w-48 h-48 text-[#7B4B2A] opacity-5" viewBox="0 0 100 100">
-                    <path d="M30,90 Q40,70 30,50 T30,10" fill="none" stroke="currentColor" stroke-width="0.5" stroke-dasharray="2,2" />
-                    <path d="M50,85 Q65,65 50,45 T50,5" fill="none" stroke="currentColor" stroke-width="0.5" stroke-dasharray="3,3" />
-                </svg>
+        <!-- 咖啡豆纹理 -->
+        <div class="absolute inset-0 pointer-events-none opacity-10">
+            <svg class="absolute bottom-10 right-10 w-48 h-48 text-[#7B4B2A]" viewBox="0 0 100 100">
+                <path d="M30,90 Q40,70 30,50 T30,10" fill="none" stroke="currentColor" stroke-width="0.5" stroke-dasharray="2,2" />
+            </svg>
+        </div>
+
+        <div class="absolute top-10 left-[-30px] z-40 transform -rotate-[35deg]">
+            <div class="w-44 h-10 bg-white/40 backdrop-blur-[4px] border border-white/30 shadow-sm"></div>
+        </div>
+
+        <header class="relative z-20 mb-20 transform rotate-[-0.5deg] bg-white p-8 md:p-10 scrap-shadow border-t-4 border-[#2C5E4F] w-full">
+            <div class="flex items-center gap-2 mb-3 text-[#2C5E4F]">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#E69138" stroke-width="2.5" stroke-linecap="round"><rect width="20" height="14" x="2" y="7" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+                <span class="text-[10px] font-black tracking-[0.3em] opacity-40 uppercase">Moodboard · v5.4</span>
             </div>
-            <div id="tech-pattern" class="absolute inset-0 tech-grid opacity-0 pointer-events-none transition-opacity duration-500"></div>
+            <h1 class="text-4xl md:text-6xl font-black flex items-baseline gap-2 tracking-tighter mb-4 text-[#2C5E4F]">
+                今日宜喝咖啡
+                <span class="terminal-cursor text-[#E69138] font-mono text-2xl md:text-4xl opacity-50 ml-2">/</span>
+            </h1>
+            <p class="text-xl opacity-60 font-medium tracking-tight text-[#2C5E4F]">都市白领方向 · 视觉灵感手册</p>
+        </header>
 
-            <!-- 装饰胶带 -->
-            <div class="absolute top-10 left-[-30px] z-40 transform -rotate-[35deg]">
-                <div class="w-44 h-10 bg-white/40 backdrop-blur-[4px] border border-white/30 shadow-sm"></div>
-                <div class="w-44 h-10 bg-black/5 blur-md absolute top-1.5 left-1.5 -z-10"></div>
-            </div>
-
-            <!-- 标题区域 -->
-            <header id="main-header" class="relative z-20 mb-20 transform rotate-[-0.5deg] bg-white p-8 md:p-10 scrap-shadow border-t-4 border-[#2C5E4F] w-full transition-all-500 text-inherit">
-                <div class="flex items-center gap-2 mb-3">
-                    <div id="header-icon"></div>
-                    <span id="version-tag" class="text-[10px] font-black tracking-[0.3em] opacity-40 uppercase">Moodboard · v5.3</span>
-                </div>
-                <h1 id="main-title" class="text-4xl md:text-6xl font-black flex items-baseline gap-2 tracking-tighter mb-4 transition-all">
-                    今日宜喝咖啡
-                    <span id="terminal-cursor" class="text-[#E69138] font-mono text-2xl md:text-4xl opacity-50 ml-2">/</span>
-                </h1>
-                <p id="sub-title" class="text-xl opacity-60 font-medium tracking-tight">
-                    都市白领方向 · 视觉灵感手册
-                </p>
-            </header>
-
-            <!-- 内容网格 -->
-            <div class="relative grid grid-cols-1 md:grid-cols-2 gap-12 z-10 text-inherit">
-                <!-- 左侧栏 -->
-                <div class="space-y-12 transform rotate-1 transition-transform duration-700">
-                    <section class="bg-white p-10 shadow-lg border border-black/5 relative overflow-hidden transition-all-500">
-                        <h2 class="text-[11px] font-black mb-10 flex items-center gap-2 opacity-40 uppercase tracking-[0.25em] text-inherit">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="13.5" cy="6.5" r=".5" fill="currentColor"/><circle cx="17.5" cy="10.5" r=".5" fill="currentColor"/><circle cx="8.5" cy="7.5" r=".5" fill="currentColor"/><circle cx="6.5" cy="12.5" r=".5" fill="currentColor"/><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.707-.484 2.103-1.206.35-.64.302-1.45-.122-2.172a3.39 3.39 0 0 1 .519-4.141c.994-.994 2.654-1.476 4.14-1.356.73.06 1.48-.133 2.062-.544C21.444 12.18 22 11.156 22 10.125 22 5.637 17.513 2 12 2"/></svg>
-                            色彩规范 / Color Palette
-                        </h2>
-                        <div id="color-list" class="space-y-8"></div>
-                    </section>
-
-                    <section id="polaroid" class="bg-white pt-10 pb-12 px-6 shadow-2xl transform -rotate-2 hover:rotate-0 transition-all duration-700 relative group">
-                        <svg class="absolute -top-6 -left-2 w-10 h-24 text-zinc-400 rotate-[-20deg] z-30 drop-shadow-sm opacity-60" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M21.44 11.05l-9.19 9.19a6 6 0 01-8.49-8.49l9.19-9.19a4 4 0 015.66 5.66l-9.2 9.19a2 2 0 01-2.83-2.83l8.49-8.48" />
-                        </svg>
-                        <div class="aspect-[4/5] bg-zinc-100 mb-6 overflow-hidden relative border border-black/5">
-                            <img id="ref-image" src="" alt="Mood" class="w-full h-full object-cover grayscale opacity-80 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-1000">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-12 z-10 text-[#2C5E4F]">
+            <div class="space-y-12 transform rotate-1">
+                <section class="bg-white p-10 shadow-lg border border-black/5">
+                    <h2 class="text-[11px] font-black mb-10 flex items-center gap-2 opacity-40 uppercase tracking-[0.25em]">色彩规范 / Color Palette</h2>
+                    <div class="space-y-8">
+                        <div class="flex items-center gap-6 group">
+                            <div class="w-16 h-16 rounded-sm shadow-md border border-black/5 transition-transform group-hover:scale-110" style="background-color: #2C5E4F;"></div>
+                            <div class="flex flex-col">
+                                <p class="font-black text-sm">复古墨绿</p>
+                                <p class="text-[9px] font-bold mt-1 uppercase tracking-wider opacity-60">主背景 / 职业感</p>
+                            </div>
                         </div>
-                        <div class="text-left space-y-1 text-inherit">
-                            <p id="ref-tag" class="text-[9px] font-black opacity-30 tracking-[0.2em] uppercase">Reference Source</p>
-                            <p id="ref-desc" class="text-[10px] font-bold opacity-60 leading-relaxed"></p>
+                        <div class="flex items-center gap-6 group">
+                            <div class="w-16 h-16 rounded-sm shadow-md border border-black/5 transition-transform group-hover:scale-110" style="background-color: #7B4B2A;"></div>
+                            <div class="flex flex-col">
+                                <p class="font-black text-sm">咖啡焦糖</p>
+                                <p class="text-[9px] font-bold mt-1 uppercase tracking-wider opacity-60">辅助色 / 醇厚度</p>
+                            </div>
                         </div>
-                    </section>
-                </div>
-
-                <!-- 右侧栏 -->
-                <div class="space-y-12">
-                    <section class="bg-white p-12 shadow-xl transform rotate-[-1.5deg] relative overflow-hidden min-h-[500px] transition-all-500">
-                        <div id="bg-icon-container" class="transition-all duration-500 text-inherit"></div>
-                        <h2 class="text-[11px] font-black mb-12 flex items-center gap-3 opacity-40 uppercase tracking-[0.25em] relative z-10 text-inherit">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 7 4 4 20 4 20 7"/><line x1="9" x2="15" y1="20" y2="20"/><line x1="12" x2="12" y1="4" y2="20"/></svg>
-                            字体系统 / Typography
-                        </h2>
-                        <div id="typo-list" class="space-y-10 relative z-10"></div>
-                    </section>
-
-                    <section class="bg-white/70 backdrop-blur-md p-10 shadow-lg border border-black/10 transform rotate-1 relative group overflow-hidden transition-all-500">
-                        <h2 class="text-[11px] font-black mb-8 flex items-center gap-3 opacity-40 uppercase tracking-[0.3em] text-inherit">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 22-1.35-1.35a2 2 0 0 1 0-2.83L15.41 4.05a2 2 0 0 1 2.83 0l2.83 2.83a2 2 0 0 1 0 2.83L7.35 23.35a2 2 0 0 1-2.83 0L3 22Z"/><path d="m11 15 2 2"/><path d="m15 11 2 2"/><path d="m5 18 2 2"/><path d="m19 7-2-2"/></svg>
-                            布局逻辑 / Design Specs
-                        </h2>
-                        <div id="layout-list" class="space-y-6"></div>
-                    </section>
-                </div>
-            </div>
-
-            <!-- 页脚 -->
-            <footer class="mt-28 pt-10 border-t border-dashed border-black/10 flex flex-col items-center gap-6 opacity-30 transition-all-500 text-inherit">
-                <div class="flex items-center gap-8">
-                    <div id="footer-icon"></div>
-                    <div class="flex flex-col text-center">
-                        <p id="footer-ver" class="text-[10px] font-black tracking-[0.5em] uppercase">Visual Mood Spec v5.3</p>
-                        <p class="text-[9px] font-mono uppercase opacity-60">A3 Portrait · Interactive System</p>
                     </div>
-                    <div id="footer-side-icon"></div>
-                </div>
-                <div id="status-tag" class="px-6 py-1.5 border border-black/20 rounded-full text-[8px] font-black tracking-[0.2em]">
-                    PROJECT ASSIGNMENT · 2025.03
-                </div>
-            </footer>
-        </div>
+                </section>
 
-        <!-- 侧边固定索引标签 (数字并排直立) -->
-        <div class="flex flex-col gap-1 mt-32 -ml-0.5">
-            <button onclick="setMode('coffee')" id="tab-coffee" class="index-tab active w-12 h-40 rounded-r-xl bg-[#F5F2E9] border border-l-0 border-black/5 text-[#2C5E4F]">
-                <div class="flex flex-row justify-center items-center font-mono text-[15px] font-black leading-none mb-1">
-                    <span>0</span><span>1</span>
-                </div>
-                <span class="vertical-text text-[14px] font-black">今日咖啡</span>
-            </button>
-            <button onclick="setMode('tech')" id="tab-tech" class="index-tab w-12 h-40 rounded-r-xl bg-[#F0F4FF] border border-l-0 border-black/5 text-[#1E40AF] opacity-60">
-                <div class="flex flex-row justify-center items-center font-mono text-[15px] font-black leading-none mb-1">
-                    <span>0</span><span>2</span>
-                </div>
-                <span class="vertical-text text-[14px] font-black">科技峰会</span>
-            </button>
-        </div>
+                <section class="bg-white pt-10 pb-12 px-6 shadow-2xl transform -rotate-2 group">
+                    <div class="aspect-[4/5] bg-zinc-100 mb-6 overflow-hidden border border-black/5">
+                        <img src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&q=80&w=800" class="reveal-img w-full h-full object-cover">
+                    </div>
+                    <p class="text-[10px] font-bold opacity-60">氛围意向：温暖复古、硬朗阴影、职场唤醒</p>
+                </section>
+            </div>
 
-    </div>
-    
-    <div class="hidden 2xl:block fixed left-12 top-0 h-full w-px bg-black/5"></div>
+            <div class="space-y-12">
+                <section class="bg-white p-12 shadow-xl transform rotate-[-1.5deg] relative overflow-hidden min-h-[500px]">
+                    <svg class="absolute -top-10 -right-10 w-44 h-44 text-[#7B4B2A] opacity-5 -rotate-12" viewBox="0 0 100 100" fill="currentColor">
+                        <path d="M50 20 C40 20 30 35 30 50 C30 65 40 80 50 80 C60 80 70 65 70 50 C70 35 60 20 50 20" fill="none" stroke="currentColor" stroke-width="1.5" />
+                        <path d="M48 25 C52 40 48 60 52 75" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                    </svg>
+                    <h2 class="text-[11px] font-black mb-12 flex items-center gap-3 opacity-40 uppercase tracking-[0.25em]">字体系统 / Typography</h2>
+                    <div class="space-y-10">
+                        <div class="reveal-edge border-l-2 border-transparent pl-0">
+                            <p class="text-[9px] font-black uppercase tracking-[0.2em] mb-3 text-[#E69138]">主标题 / 思源黑体 Bold</p>
+                            <p class="text-3xl font-black leading-tight">今日宜喝咖啡</p>
+                        </div>
+                        <div class="reveal-edge border-l-2 border-transparent pl-0">
+                            <p class="text-[9px] font-black uppercase tracking-[0.2em] mb-3 text-[#E69138]">副标题 / 思源宋体 Bold</p>
+                            <p class="text-3xl font-black leading-tight">Classic Brew</p>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </article>
+
+    <!-- 页面 2: 科技峰会 -->
+    <article id="section-tech" data-mode="tech" class="moodboard-page relative w-full max-w-[800px] min-h-[1132px] bg-[#F0F4FF] paper-shadow p-10 md:p-14 border border-black/5 rounded-sm transition-all-500 overflow-hidden">
+        
+        <div class="absolute inset-0 tech-grid opacity-30"></div>
+
+        <header class="relative z-20 mb-20 transform rotate-[-0.5deg] bg-white p-8 md:p-10 scrap-shadow border-t-4 border-[#1E40AF] w-full text-[#1A1F36]">
+            <div class="flex items-center gap-2 mb-3">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#1D4ED8" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                <span class="text-[10px] font-black tracking-[0.3em] opacity-40 uppercase">Moodboard · v5.4</span>
+            </div>
+            <h1 class="text-4xl md:text-6xl font-black flex items-baseline gap-2 tracking-tighter mb-4">
+                2025 互联网峰会
+                <span class="terminal-cursor text-[#1D4ED8] font-mono text-2xl md:text-4xl opacity-50 ml-2">/</span>
+            </h1>
+            <p class="text-xl opacity-60 font-medium tracking-tight">AI 时代 · 数字共生全球峰会</p>
+        </header>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-12 z-10 text-[#1A1F36]">
+            <div class="space-y-12 transform rotate-1">
+                <section class="bg-white p-10 shadow-lg border border-black/5">
+                    <h2 class="text-[11px] font-black mb-10 flex items-center gap-2 opacity-40 uppercase tracking-[0.25em]">色彩规范 / Color Palette</h2>
+                    <div class="space-y-8">
+                        <div class="flex items-center gap-6 group">
+                            <div class="w-16 h-16 rounded-sm shadow-md border border-black/5 transition-transform group-hover:scale-110" style="background-color: #020617;"></div>
+                            <div class="flex flex-col">
+                                <p class="font-black text-sm">深海核心</p>
+                                <p class="text-[9px] font-bold mt-1 uppercase tracking-wider opacity-60">主背景 / 深度感</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="bg-white pt-10 pb-12 px-6 shadow-2xl transform -rotate-2 group">
+                    <div class="aspect-[4/5] bg-zinc-100 mb-6 overflow-hidden border border-black/5">
+                        <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&q=80&w=800" class="reveal-img w-full h-full object-cover">
+                    </div>
+                    <p class="text-[10px] font-bold opacity-60">氛围意向：数字基建、深海美学、工业精密感</p>
+                </section>
+            </div>
+
+            <div class="space-y-12">
+                <section class="bg-white p-12 shadow-xl transform rotate-[-1.5deg] relative overflow-hidden min-h-[500px]">
+                    <svg class="absolute -top-10 -right-10 w-44 h-44 text-[#1E40AF] opacity-10 -rotate-12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/><circle cx="15" cy="15" r="2" fill="currentColor"/></svg>
+                    <h2 class="text-[11px] font-black mb-12 flex items-center gap-3 opacity-40 uppercase tracking-[0.25em]">字体系统 / Typography</h2>
+                    <div class="space-y-10">
+                        <div class="reveal-edge border-l-2 border-transparent pl-0" data-accent="#1D4ED8">
+                            <p class="text-[9px] font-black uppercase tracking-[0.2em] mb-3 text-[#1D4ED8]">主标题 / 思源黑体 Bold</p>
+                            <p class="text-3xl font-black leading-tight">INTERNET SUMMIT</p>
+                        </div>
+                        <div class="reveal-edge border-l-2 border-transparent pl-0" data-accent="#1D4ED8">
+                            <p class="text-[9px] font-black uppercase tracking-[0.2em] mb-3 text-[#1D4ED8]">副标题 / 思源黑体 Medium</p>
+                            <p class="text-3xl font-black leading-tight">数字共生 · 智领未来</p>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </article>
+
+    <div class="h-24"></div> <!-- 底部缓冲 -->
 
     <script>
-        const content = {
-            coffee: {
-                headerBorder: '#2C5E4F',
-                accent: '#E69138',
-                title: '今日宜喝咖啡',
-                subTitle: '都市白领方向 · 视觉灵感手册',
-                image: 'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&q=80&w=800',
-                imageDesc: '氛围意向：温暖复古、硬朗阴影、职场唤醒',
-                colors: [
-                    { name: '复古墨绿', hex: '#2C5E4F', use: '主背景 / 职业感' },
-                    { name: '咖啡焦糖', hex: '#7B4B2A', use: '辅助色 / 醇厚度' },
-                    { name: '质感米白', hex: '#F5F2E9', use: '文字背景 / 纸张感' },
-                    { name: '活力浅橙', hex: '#E69138', use: '点缀色 / 唤醒灵感' }
-                ],
-                typo: [
-                    { t: '主标题 / 思源黑体 Bold', v: '今日宜喝咖啡' },
-                    { t: '副标题 / 思源宋体 Bold', v: 'Classic Brew' },
-                    { t: '正文 / 思源宋体 Medium', v: '没事喝冷萃，上班不瞌睡。唤醒沉睡的灵感，从这一杯开始。' }
-                ],
-                layout: [
-                    { t: '黄金分割视觉路径', d: '利用流体动向牵引读者视线。' },
-                    { t: '呼吸感负空间', d: '严控 60% 留白率，维持冷静气质。' },
-                    { t: '虚实纹理交叠', d: '寻找摄影与手绘的平衡点。' }
-                ],
-                icons: {
-                    bg: `<svg class="absolute -top-10 -right-10 w-44 h-44 text-[#7B4B2A] opacity-5 -rotate-12" viewBox="0 0 100 100" fill="currentColor">
-                            <path d="M50 20 C40 20 30 35 30 50 C30 65 40 80 50 80 C60 80 70 65 70 50 C70 35 60 20 50 20" fill="none" stroke="currentColor" stroke-width="1.5" />
-                            <path d="M48 25 C52 40 48 60 52 75" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
-                         </svg>`,
-                    header: '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#E69138" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="14" x="2" y="7" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>',
-                    footer: '<svg class="w-5 h-5 animate-pulse text-[#7B4B2A]" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/></svg>',
-                    footerSide: '<svg class="w-5 h-5 text-[#2C5E4F]" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m12.83 2.18a2 2 0 0 0-1.66 0L2.18 6.18a2 2 0 0 0 0 3.64l9 4a2 2 0 0 0 1.66 0l9-4a2 2 0 0 0 0-3.64Z"/></svg>'
-                }
-            },
-            tech: {
-                headerBorder: '#1E40AF',
-                accent: '#1D4ED8',
-                title: '2025 互联网峰会',
-                subTitle: 'AI 时代 · 数字共生全球峰会',
-                image: 'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&q=80&w=800',
-                imageDesc: '氛围意向：数字基建、深海美学、工业精密感',
-                colors: [
-                    { name: '深海核心', hex: '#020617', use: '主背景 / 深度感' },
-                    { name: '经典商务蓝', hex: '#1E40AF', use: '辅助色 / 行业基石' },
-                    { name: '冰点亮白', hex: '#F0F4FF', use: '文字背板 / 清晰度' },
-                    { name: '科技亮蓝', hex: '#3B82F6', use: '高亮色 / 核心交互' }
-                ],
-                typo: [
-                    { t: '主标题 / 思源黑体 Bold', v: '2025 INTERNET SUMMIT' },
-                    { t: '副标题 / 思源黑体 Medium', v: '数字共生 · 智领未来' },
-                    { t: '正文 / 思源黑体 Light', v: '突破算力边界，重定义数字时代的商业逻辑。AI 正在全方位赋能产业闭环。' }
-                ],
-                layout: [
-                    { t: '中心对称构图', d: '通过绝对对称强调峰会的权威性与稳定性。' },
-                    { t: '像素化留白', d: '利用微网格系统进行元素定位，体现工业精密感。' },
-                    { t: '冷色系渐变', d: '使用线性梯度模拟屏幕发光感。' }
-                ],
-                icons: {
-                    bg: '<svg class="absolute -top-10 -right-10 w-44 h-44 text-[#1E40AF] opacity-10 -rotate-12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/><circle cx="15" cy="15" r="2" fill="currentColor"/></svg>',
-                    header: '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#1D4ED8" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>',
-                    footer: '<svg class="w-5 h-5 animate-pulse text-[#1E40AF]" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v10"/><path d="M18.4 4.6a10 10 0 1 1-12.8 0"/></svg>',
-                    footerSide: '<svg class="w-5 h-5 text-[#1E40AF]" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>'
-                }
-            }
+        // 1. 核心滚动感应系统
+        const sections = document.querySelectorAll('.moodboard-page');
+        const tabs = { 'coffee': document.getElementById('tab-01'), 'tech': document.getElementById('tab-02') };
+        const body = document.getElementById('body-root');
+
+        const observerOptions = {
+            root: null,
+            threshold: 0.4 // 视口露出 40% 时切换状态
         };
 
-        function setMode(mode) {
-            const data = content[mode];
-            const isTech = mode === 'tech';
+        const pageObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const mode = entry.target.getAttribute('data-mode');
+                    updateGlobalMode(mode);
+                }
+            });
+        }, observerOptions);
 
-            document.getElementById('body-root').className = `mode-${mode} p-4 md:p-8 flex justify-center items-start overflow-x-hidden transition-all-500`;
-            const container = document.getElementById('poster-container');
-            container.style.backgroundColor = isTech ? '#F0F4FF' : '#F5F2E9';
+        sections.forEach(s => pageObserver.observe(s));
+
+        function updateGlobalMode(mode) {
+            // 更新 Body 样式
+            body.className = `mode-${mode} p-4 md:p-8 flex flex-col items-center gap-24 overflow-x-hidden`;
             
-            document.getElementById('coffee-pattern').style.opacity = isTech ? '0' : '1';
-            document.getElementById('tech-pattern').style.opacity = isTech ? '1' : '0';
-            
-            const tabCoffee = document.getElementById('tab-coffee');
-            const tabTech = document.getElementById('tab-tech');
-            if(isTech) {
-                tabTech.classList.add('active');
-                tabTech.style.opacity = '1';
-                tabCoffee.classList.remove('active');
-                tabCoffee.style.opacity = '0.6';
-            } else {
-                tabCoffee.classList.add('active');
-                tabCoffee.style.opacity = '1';
-                tabTech.classList.remove('active');
-                tabTech.style.opacity = '0.6';
-            }
+            // 更新侧边标签状态
+            Object.values(tabs).forEach(t => t.classList.remove('active'));
+            tabs[mode].classList.add('active');
 
-            const header = document.getElementById('main-header');
-            header.style.borderTopColor = data.headerBorder;
-            document.getElementById('main-title').innerText = data.title;
-            const cursor = document.createElement('span');
-            cursor.id = 'terminal-cursor';
-            cursor.className = 'font-mono text-2xl md:text-4xl opacity-50 ml-2';
-            cursor.style.color = data.accent;
-            cursor.innerText = '/';
-            document.getElementById('main-title').appendChild(cursor);
-            document.getElementById('sub-title').innerText = data.subTitle;
-            document.getElementById('header-icon').innerHTML = data.icons.header;
-
-            document.getElementById('ref-image').src = data.image;
-            document.getElementById('ref-desc').innerText = data.imageDesc;
-
-            document.getElementById('bg-icon-container').innerHTML = data.icons.bg;
-            document.getElementById('footer-icon').innerHTML = data.icons.footer;
-            document.getElementById('footer-side-icon').innerHTML = data.icons.footerSide;
-
-            renderColors(data.colors);
-            renderTypo(data.typo, isTech, data.accent);
-            renderLayout(data.layout, isTech, data.accent);
-
-            if(isTech) container.classList.add('animate-neon');
-            else container.classList.remove('animate-neon');
+            // 科技模式开启呼吸灯
+            const container = document.getElementById(`section-${mode}`);
+            if(mode === 'tech') container.classList.add('animate-neon');
+            else document.getElementById('section-tech').classList.remove('animate-neon');
         }
 
-        function renderColors(colors) {
-            const list = document.getElementById('color-list');
-            list.innerHTML = colors.map(c => `
-                <div class="flex items-center gap-6 group text-inherit">
-                    <div class="w-16 h-16 rounded-sm shadow-md border border-black/5 transition-transform hover:scale-110" style="background-color: ${c.hex};"></div>
-                    <div class="flex flex-col">
-                        <p class="font-black text-sm tracking-tight text-inherit">${c.name}</p>
-                        <p class="text-[10px] font-mono opacity-40 uppercase">${c.hex}</p>
-                        <p class="text-[9px] font-bold mt-1 uppercase tracking-wider opacity-60">${c.use}</p>
-                    </div>
-                </div>
-            `).join('');
-        }
+        // 2. 内部板块自动动效感应 (移动端优化)
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('in-view');
+                    // 设置动态边线颜色
+                    if(entry.target.classList.contains('reveal-edge')) {
+                        const accent = entry.target.getAttribute('data-accent') || '#E69138';
+                        entry.target.style.borderLeftColor = accent;
+                    }
+                } else {
+                    entry.target.classList.remove('in-view');
+                    entry.target.style.borderLeftColor = 'transparent';
+                }
+            });
+        }, { threshold: 0.8 });
 
-        function renderTypo(typo, isTech, accent) {
-            const list = document.getElementById('typo-list');
-            list.innerHTML = typo.map(t => `
-                <div class="typo-group border-l-2 border-transparent pl-0 transition-all duration-300" style="--hover-accent: ${accent}">
-                    <style>
-                        .typo-group:hover { border-left-color: var(--hover-accent) !important; padding-left: 1.25rem; }
-                    </style>
-                    <p class="text-[9px] font-black uppercase tracking-[0.2em] mb-3 opacity-60" style="color: ${accent}">${t.t}</p>
-                    <p class="${t.v.length > 20 ? 'text-sm leading-relaxed opacity-80 italic text-inherit' : 'text-3xl font-black leading-tight text-inherit'}">${t.v}</p>
-                </div>
-            `).join('');
-        }
+        document.querySelectorAll('.reveal-edge, .reveal-img').forEach(el => revealObserver.observe(el));
 
-        function renderLayout(layout, isTech, accent) {
-            const list = document.getElementById('layout-list');
-            list.innerHTML = layout.map(l => `
-                <div class="flex gap-4 border-l border-black/10 pl-4 group transition-colors">
-                    <style>
-                        .group:hover { border-left-color: ${accent} !important; }
-                    </style>
-                    <div class="flex flex-col gap-1 group-hover:translate-x-1 transition-transform text-inherit">
-                        <p class="text-[10px] font-black uppercase tracking-wider opacity-60">${l.t}</p>
-                        <p class="text-[10px] opacity-50 leading-relaxed italic">${l.d}</p>
-                    </div>
-                </div>
-            `).join('');
+        // 3. 辅助功能
+        function scrollToSection(id) {
+            document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
         }
-
-        setMode('coffee');
 
         const cursors = ['/', '-', '\\', '|'];
-        let index = 0;
+        let cursorIndex = 0;
         setInterval(() => {
-            const cursorEl = document.getElementById('terminal-cursor');
-            if(cursorEl) {
-                index = (index + 1) % cursors.length;
-                cursorEl.textContent = cursors[index];
-            }
+            cursorIndex = (cursorIndex + 1) % cursors.length;
+            document.querySelectorAll('.terminal-cursor').forEach(el => el.textContent = cursors[cursorIndex]);
         }, 200);
     </script>
 </body>
